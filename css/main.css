@@ -1,5 +1,13 @@
 html{
     scroll-behavior: smooth;
+    font-family: 'Times New Roman', Times, serif;
+}
+img{
+    border-radius: 10%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+p{
+    font-size: larger;
 }
 header nav{
     background-color: #333;
@@ -76,14 +84,46 @@ section{
         height: auto;
     }
 }
-#section4 a{
-    text-decoration: none;
-    color: #0011ff;
-    transition: color 0.3s ease;
-    &:hover{
-        color: #5f4cca;
+#section4{
+    h2{
+        font-size: 2em;
+        text-align: center;
+    }
+    a{
+        text-decoration: none;
+        color: #0011ff;
+        transition: color 0.3s ease;
+        &:hover{
+            color: #5f4cca;
+        }
+    }
+    .hidden {
+        opacity: 0;
+        transform: translateY(10px);
+        pointer-events: none;
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    
+    .visible {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }   
+}
+
+#section1{
+    h4{
+        font-size: larger;
+    }
+    ul{
+        list-style: none;
+    }
+    li{
+        text-align: center;
+        font-size: larger;
     }
 }
+
 footer{
     background-color: #333;
     color: #fff;
@@ -108,4 +148,93 @@ div#tgv{
         margin-bottom: 10px;
         text-align: center;
     }
+}
+
+#section2{
+    .container {
+        background: white;
+        max-width: 400px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        font-weight: bold;
+        display: block;
+        margin: 10px 0 5px;
+    }
+
+    select, input {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .visible {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+    .hidden {
+        display: none;
+    }
+
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+    h2{
+        text-align: center;
+        font-size: 2em;
+    }
+    #vente{
+        display: flex;
+        margin: auto;
+        .tgvpub{
+            background: white;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .avis{
+            text-align: center;
+            background: white;
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            a img{
+                width: 60px;
+                height: auto;
+            }
+        }
+    }
+}
+
+.superBox{
+    background: white;
+    max-width: 1500px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }

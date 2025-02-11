@@ -15,38 +15,72 @@ function animateImage() {
 animateImage();
 
 const sub = document.getElementById('message')
-const button = document.getElementById('bouton')
+const button = document.getElementById('submitBtn')
 button.addEventListener('click', () => {
     sub.innerText = "Merci !"
     button.style.backgroundColor = "green"
+    document.getElementById("contactForm").reset()
 })
 
-document.getElementById("contactForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Empêche l'envoi du formulaire
+function onCaptchaSuccess(token) {
+    console.log("✅ hCaptcha validé ! Token :", token)
 
-    let hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value; // Récupère la réponse hCaptcha
-    if (!hcaptchaResponse) {
-        document.getElementById("message").innerText = "Veuillez valider le hCaptcha.";
+    if (token) {
+        document.getElementById("message").innerText = "✅ hCaptcha validé !"
+        document.getElementById("submitBtn").classList.add("visible")
+    }
+}
+
+const depart = document.getElementById("depart")
+const destination = document.getElementById("destination")
+const prixContainer = document.getElementById("prixContainer")
+const prixElement = document.getElementById("prix")
+const reserverBtn = document.getElementById("reserver")
+const distances = {
+    "paris-lyon": 450,
+    "paris-marseille": 775,
+    "paris-bordeaux": 584,
+    "paris-lille": 220,
+    "lyon-marseille": 315,
+    "lyon-bordeaux": 540,
+    "lyon-lille": 680,
+    "marseille-bordeaux": 646,
+    "marseille-lille": 1020,
+    "bordeaux-lille": 790
+}
+
+reserverBtn.addEventListener('click', () => {
+    const gareDepart = depart.value
+    const gareArrivee = destination.value
+
+    if (gareDepart === gareArrivee || gareDepart === "" || gareArrivee === "") {
+        prixContainer.classList.add("hidden")
+        alert("Veuillez choisir deux gares différentes")
+        return
+    }
+    if (date.value === "" || horaire.value === "") {
+        alert("Veuillez sélectionner une date et un horaire");
         return;
     }
 
-    // Envoyer la réponse hCaptcha à l'API de vérification
-    fetch("https://hcaptcha.com/siteverify", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-            "secret": "ES_ed60eb9128ab4d038590d49f3d254d01",
-            "response": hcaptchaResponse
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            document.getElementById("message").innerText = "hCaptcha validé ! Formulaire soumis.";
-            // Ici, vous pouvez envoyer les données via Fetch ou une API.
-        } else {
-            document.getElementById("message").innerText = "Échec de hCaptcha, veuillez réessayer.";
-        }
-    })
-    .catch(error => console.error("Erreur:", error));
-});
+    const trajet = gareDepart + "-" + gareArrivee
+    const trajetInverse = gareArrivee + "-" + gareDepart
+
+    let distance = distances[trajet] || distances[trajetInverse] || 0
+    console.log("Distance entre", gareDepart, "et", gareArrivee, ":", distance, "km")
+
+    if (distance > 0) {
+        let prix = (distance * 0.12 + 10).toFixed(2) // Prix basé sur la distance (~0.12€/km + 10€ de base)
+        prixElement.textContent = prix
+        prixContainer.classList.remove("hidden")
+        prixContainer.classList.add("visible")
+        console.log("C'est censé fonctionner")
+    }
+})
+
+window.onload = function() {
+    document.getElementById("depart").selectedIndex = 0
+    document.getElementById("destination").selectedIndex = 0
+    document.getElementById("date").value = ""
+    document.getElementById("horaire").value = ""
+}
