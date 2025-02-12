@@ -4,7 +4,7 @@ const screenWidth = window.innerWidth
 let positionX = screenWidth
 
 function animateImage() {
-    positionX -= 1.5; // Vitesse de défilement
+    positionX -= 10; // Vitesse de défilement
     if (positionX < -imageWidth) {
         positionX = screenWidth
     }
@@ -48,33 +48,39 @@ const distances = {
     "marseille-lille": 1020,
     "bordeaux-lille": 790
 }
-
+let visible = false
 reserverBtn.addEventListener('click', () => {
-    const gareDepart = depart.value
-    const gareArrivee = destination.value
+        if(!visible) {
+        const gareDepart = depart.value
+        const gareArrivee = destination.value
 
-    if (gareDepart === gareArrivee || gareDepart === "" || gareArrivee === "") {
-        prixContainer.classList.add("hidden")
-        alert("Veuillez choisir deux gares différentes")
-        return
+        if (gareDepart === gareArrivee || gareDepart === "" || gareArrivee === "") {
+            prixContainer.classList.add("hidden")
+            alert("Veuillez choisir deux gares différentes")
+            return
+        }
+        if (date.value === "" || horaire.value === "") {
+            alert("Veuillez sélectionner une date et un horaire");
+            return;
+        }
+
+        const trajet = gareDepart + "-" + gareArrivee
+        const trajetInverse = gareArrivee + "-" + gareDepart
+
+        let distance = distances[trajet] || distances[trajetInverse] || 0
+
+        if (distance > 0) {
+            let prix = (distance * 0.12 + 10).toFixed(2) // Prix basé sur la distance (~0.12€/km + 10€ de base)
+            prixElement.textContent = prix
+            prixContainer.classList.remove("hidden")
+            prixContainer.classList.add("visible")
+            visible = true
+            reserverBtn.textContent = "Payer"
+        }
     }
-    if (date.value === "" || horaire.value === "") {
-        alert("Veuillez sélectionner une date et un horaire");
-        return;
-    }
-
-    const trajet = gareDepart + "-" + gareArrivee
-    const trajetInverse = gareArrivee + "-" + gareDepart
-
-    let distance = distances[trajet] || distances[trajetInverse] || 0
-    console.log("Distance entre", gareDepart, "et", gareArrivee, ":", distance, "km")
-
-    if (distance > 0) {
-        let prix = (distance * 0.12 + 10).toFixed(2) // Prix basé sur la distance (~0.12€/km + 10€ de base)
-        prixElement.textContent = prix
-        prixContainer.classList.remove("hidden")
-        prixContainer.classList.add("visible")
-        console.log("C'est censé fonctionner")
+    else {
+        window.location.href = "https://buy.stripe.com/test_fZeaI06YR7da6aI5kk"
+        visible = false
     }
 })
 
